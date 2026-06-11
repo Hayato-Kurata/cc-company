@@ -17,9 +17,8 @@
 | 11 | 矢島 悠暉 | ヤジマ ハルキ | s23768hy@sfc.keio.ac.jp |
 | 12 | 宮城 彬良 | ミヤギ アキラ | miyaaki564@gmail.com |
 | 13 | 土口 香衣 | | sgnfh461@gmail.com |
-| 14 | 名前 | ナマエ | |
-| 15 | 渡邉 楽 | ワタナベ ラク | raku411.w@gmail.com |
-| 16 | 伊藤 優那 | イトウ ユウナ | minion20051122@gmail.com |
+| 14 | 渡邉 楽 | ワタナベ ラク | raku411.w@gmail.com |
+| 15 | 伊藤 優那 | イトウ ユウナ | minion20051122@gmail.com |
 
 ---
 
@@ -29,7 +28,7 @@
 keisuke.watanabe@shogakukan.jp, hayato.kurata@steenz.jp, kanon.yokoi@steenz.jp, kaimiyaki.work@gmail.com, happybanana195@gmail.com, sera29708@gmail.com, kotastep5523@gmail.com, himariamakata@gmail.com, pip17music@gmail.com, magu6.yoyo4@gmail.com, s23768hy@sfc.keio.ac.jp, miyaaki564@gmail.com, sgnfh461@gmail.com, raku411.w@gmail.com, minion20051122@gmail.com
 ```
 
-未登録（アドレス待ち）: 名前
+未登録（アドレス待ち）: なし
 
 ---
 

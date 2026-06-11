@@ -2,23 +2,23 @@
 
 メンバーのメールアドレス一覧。
 
-| #  | 名前 | フリガナ | メールアドレス |
-|----|------|----------|----------------|
-| 1  | 渡邊 景亮 | ワタナベ ケイスケ | keisuke.watanabe@shogakukan.jp |
-| 2  | 倉田 速音 | クラタ ハヤト | hayato.kurata@steenz.jp |
-| 3  | 横井 花音 | ヨコイ カノン | kanon.yokoi@steenz.jp |
-| 4  | 宮木 快 | ミヤキ カイ | kaimiyaki.work@gmail.com |
-| 5  | 石田 光太郎 | イシダ コウタロウ | happybanana195@gmail.com |
-| 6  | 高橋 せら | タカハシ セラ | sera29708@gmail.com |
-| 7  | 平澤 幸太 | ヒラサワ コウタ | kotastep5523@gmail.com |
-| 8  | 天方 向日葵 | アマカタ ヒマリ | himariamakata@gmail.com |
-| 9  | 大木 陽 | オオキ ヒナタ | pip17music@gmail.com |
-| 10 | 中島 慶乃 | ナカシマ ヨシノ | magu6.yoyo4@gmail.com |
-| 11 | 矢島 悠暉 | ヤジマ ハルキ | s23768hy@sfc.keio.ac.jp |
-| 12 | 宮城 彬良 | ミヤギ アキラ | miyaaki564@gmail.com |
-| 13 | 土口 香衣 | | sgnfh461@gmail.com |
-| 14 | 渡邉 楽 | ワタナベ ラク | raku411.w@gmail.com |
-| 15 | 伊藤 優那 | イトウ ユウナ | minion20051122@gmail.com |
+| #  | 苗字 | 名前 | フリガナ（姓） | フリガナ（名） | メールアドレス |
+|----|------|------|----------------|----------------|----------------|
+| 1  | 渡邊 | 景亮 | ワタナベ | ケイスケ | keisuke.watanabe@shogakukan.jp |
+| 2  | 倉田 | 速音 | クラタ | ハヤト | hayato.kurata@steenz.jp |
+| 3  | 横井 | 花音 | ヨコイ | カノン | kanon.yokoi@steenz.jp |
+| 4  | 宮木 | 快 | ミヤキ | カイ | kaimiyaki.work@gmail.com |
+| 5  | 石田 | 光太郎 | イシダ | コウタロウ | happybanana195@gmail.com |
+| 6  | 高橋 | せら | タカハシ | セラ | sera29708@gmail.com |
+| 7  | 平澤 | 幸太 | ヒラサワ | コウタ | kotastep5523@gmail.com |
+| 8  | 天方 | 向日葵 | アマカタ | ヒマリ | himariamakata@gmail.com |
+| 9  | 大木 | 陽 | オオキ | ヒナタ | pip17music@gmail.com |
+| 10 | 中島 | 慶乃 | ナカシマ | ヨシノ | magu6.yoyo4@gmail.com |
+| 11 | 矢島 | 悠暉 | ヤジマ | ハルキ | s23768hy@sfc.keio.ac.jp |
+| 12 | 宮城 | 彬良 | ミヤギ | アキラ | miyaaki564@gmail.com |
+| 13 | 土口 | 香衣 | | | sgnfh461@gmail.com |
+| 14 | 渡邉 | 楽 | ワタナベ | ラク | raku411.w@gmail.com |
+| 15 | 伊藤 | 優那 | イトウ | ユウナ | minion20051122@gmail.com |
 
 ---
 

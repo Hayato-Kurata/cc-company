@@ -16,7 +16,7 @@
 | 10 | 中島 | 慶乃 | ナカシマ | ヨシノ | magu6.yoyo4@gmail.com |
 | 11 | 矢島 | 悠暉 | ヤジマ | ハルキ | s23768hy@sfc.keio.ac.jp |
 | 12 | 宮城 | 彬良 | ミヤギ | アキラ | miyaaki564@gmail.com |
-| 13 | 土口 | 香衣 | | カナ | sgnfh461@gmail.com |
+| 13 | 土口 | 香衣 | ツチグチ | カナ | sgnfh461@gmail.com |
 | 14 | 渡邉 | 楽 | ワタナベ | ラク | raku411.w@gmail.com |
 | 15 | 伊藤 | 優那 | イトウ | ユウナ | minion20051122@gmail.com |
 

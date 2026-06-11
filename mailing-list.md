@@ -9,7 +9,7 @@
 | 3  | 横井 花音 | ヨコイ カノン | kanon.yokoi@steenz.jp |
 | 4  | 宮木 快 | ミヤキ カイ | kaimiyaki.work@gmail.com |
 | 5  | 石田 光太郎 | イシダ コウタロウ | happybanana195@gmail.com |
-| 6  | 高橋 せら | タカハシ セラ | |
+| 6  | 高橋 せら | タカハシ セラ | sera29708@gmail.com |
 | 7  | 平澤 幸太 | ヒラサワ コウタ | kotastep5523@gmail.com |
 | 8  | 天方 向日葵 | アマカタ ヒマリ | himariamakata@gmail.com |
 | 9  | 大木 陽 | オオキ ヒナタ | pip17music@gmail.com |
@@ -26,10 +26,10 @@
 ## 一括送信用（カンマ区切り・メールアドレスありのみ）
 
 ```
-keisuke.watanabe@shogakukan.jp, hayato.kurata@steenz.jp, kanon.yokoi@steenz.jp, kaimiyaki.work@gmail.com, happybanana195@gmail.com, kotastep5523@gmail.com, himariamakata@gmail.com, pip17music@gmail.com, magu6.yoyo4@gmail.com, s23768hy@sfc.keio.ac.jp, miyaaki564@gmail.com, sgnfh461@gmail.com, raku411.w@gmail.com, minion20051122@gmail.com
+keisuke.watanabe@shogakukan.jp, hayato.kurata@steenz.jp, kanon.yokoi@steenz.jp, kaimiyaki.work@gmail.com, happybanana195@gmail.com, sera29708@gmail.com, kotastep5523@gmail.com, himariamakata@gmail.com, pip17music@gmail.com, magu6.yoyo4@gmail.com, s23768hy@sfc.keio.ac.jp, miyaaki564@gmail.com, sgnfh461@gmail.com, raku411.w@gmail.com, minion20051122@gmail.com
 ```
 
-未登録（アドレス待ち）: 高橋 せら / 名前
+未登録（アドレス待ち）: 名前
 
 ---
 

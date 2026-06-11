@@ -4,7 +4,7 @@
 
 | #  | 名前 | フリガナ | メールアドレス |
 |----|------|----------|----------------|
-| 1  | 渡邊 景亮 | ワタナベ ケイスケ | |
+| 1  | 渡邊 景亮 | ワタナベ ケイスケ | keisuke.watanabe@shogakukan.jp |
 | 2  | 倉田 速音 | クラタ ハヤト | hayato.kurata@steenz.jp |
 | 3  | 横井 花音 | ヨコイ カノン | kanon.yokoi@steenz.jp |
 | 4  | 宮木 快 | ミヤキ カイ | kaimiyaki.work@gmail.com |
@@ -26,10 +26,10 @@
 ## 一括送信用（カンマ区切り・メールアドレスありのみ）
 
 ```
-hayato.kurata@steenz.jp, kanon.yokoi@steenz.jp, kaimiyaki.work@gmail.com, happybanana195@gmail.com, kotastep5523@gmail.com, himariamakata@gmail.com, pip17music@gmail.com, magu6.yoyo4@gmail.com, s23768hy@sfc.keio.ac.jp, miyaaki564@gmail.com, sgnfh461@gmail.com, raku411.w@gmail.com, minion20051122@gmail.com
+keisuke.watanabe@shogakukan.jp, hayato.kurata@steenz.jp, kanon.yokoi@steenz.jp, kaimiyaki.work@gmail.com, happybanana195@gmail.com, kotastep5523@gmail.com, himariamakata@gmail.com, pip17music@gmail.com, magu6.yoyo4@gmail.com, s23768hy@sfc.keio.ac.jp, miyaaki564@gmail.com, sgnfh461@gmail.com, raku411.w@gmail.com, minion20051122@gmail.com
 ```
 
-未登録（アドレス待ち）: 渡邊 景亮 / 高橋 せら / 名前
+未登録（アドレス待ち）: 高橋 せら / 名前
 
 ---
 

@@ -117,11 +117,60 @@ function createSurveyForm() {
     .setHelpText('例えば、日を決めて「セカサポ班」全員が、自分が興味がある他の班にバラバラに体験参加する日を設けるなど。')
     .setChoiceValues(['①希望する', '②希望しない', '③どちらとも言えない']);
 
-  // ===== D その他 =====
-  form.addSectionHeaderItem().setTitle('D その他');
+  // ===== D 研究会全体について =====
+  form.addSectionHeaderItem()
+    .setTitle('D 研究会全体について')
+    .setHelpText('この春学期の研究会全体を振り返ってお答えください。');
+
+  // Q14 全体満足度
+  form.addMultipleChoiceItem()
+    .setTitle('Q１４：この春学期の研究会全体として、満足していますか？')
+    .setChoiceValues(['①とても満足', '②やや満足', '③どちらとも言えない', '④やや不満', '⑤不満']);
+  form.addParagraphTextItem().setTitle('Q１４ 上記回答した理由');
+
+  // Q15 学び・成長の実感
+  form.addParagraphTextItem()
+    .setTitle('Q１５：この半年で最も成長した・身についたと思うことは何ですか？')
+    .setHelpText('（自由記述）');
+
+  // Q16 自分の取り組み姿勢の自己評価
+  form.addMultipleChoiceItem()
+    .setTitle('Q１６：あなた自身は研究会に主体的・積極的に参加できましたか？')
+    .setChoiceValues(['①とてもそう思う', '②ややそう思う', '③どちらとも言えない', '④あまりそう思わない', '⑤そう思わない']);
+  form.addParagraphTextItem().setTitle('Q１６ 上記回答した理由');
+
+  // Q17 負荷・難易度
+  form.addMultipleChoiceItem()
+    .setTitle('Q１７：課題やファシリ準備などの負荷・難易度は適切でしたか？')
+    .setChoiceValues(['①多すぎ・難しすぎ', '②やや多い・やや難しい', '③ちょうど良い', '④やや少ない・やや易しい', '⑤少なすぎ・易しすぎ']);
+
+  // Q18 教員のサポート・フィードバック
+  form.addMultipleChoiceItem()
+    .setTitle('Q１８：教員からの指導・フィードバックは役立ちましたか？')
+    .setChoiceValues(scale5b);
+  form.addParagraphTextItem().setTitle('Q１８ 上記回答した理由');
+
+  // Q19 雰囲気・心理的安全性
+  form.addMultipleChoiceItem()
+    .setTitle('Q１９：発言や質問がしやすい雰囲気でしたか？')
+    .setChoiceValues(['①とてもそう思う', '②ややそう思う', '③どちらとも言えない', '④あまりそう思わない', '⑤そう思わない']);
+
+  // Q20 後輩への推薦意向
+  form.addMultipleChoiceItem()
+    .setTitle('Q２０：この研究会を後輩に勧めたいと思いますか？')
+    .setChoiceValues(['①強く勧めたい', '②勧めたい', '③どちらとも言えない', '④あまり勧めない', '⑤勧めない']);
+
+  // ===== E 自由記述 =====
+  form.addSectionHeaderItem().setTitle('E 自由記述');
 
   form.addParagraphTextItem()
-    .setTitle('Q１４：今後の研究会のあり方、進め方について何かご意見や要望があれば自由に記述して下さい。');
+    .setTitle('Q２１：今後も「続けてほしい」と思うことを自由に記述して下さい。');
+
+  form.addParagraphTextItem()
+    .setTitle('Q２２：今後「変えてほしい・改善してほしい」と思うことを自由に記述して下さい。');
+
+  form.addParagraphTextItem()
+    .setTitle('Q２３：その他、研究会のあり方や進め方についてご意見や要望があれば自由に記述して下さい。');
 
   // ===== 出力 =====
   Logger.log('✅ フォームを作成しました');

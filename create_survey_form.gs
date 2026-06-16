@@ -21,6 +21,7 @@ function createSurveyForm() {
   var scale5 = ['①とても良かった', '②やや良かった', '③どちらとも言えない', '④あまり良くない', '⑤良くない'];
 
   // ===== 基本情報 =====
+  form.addTextItem().setTitle('学籍番号').setRequired(true);
   form.addTextItem().setTitle('学部学年').setRequired(true);
   form.addTextItem().setTitle('氏名').setRequired(true);
 

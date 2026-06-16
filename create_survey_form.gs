@@ -163,17 +163,41 @@ function createSurveyForm() {
     .setTitle('Q２０：この研究会を後輩に勧めたいと思いますか？')
     .setChoiceValues(['①強く勧めたい', '②勧めたい', '③どちらとも言えない', '④あまり勧めない', '⑤勧めない']);
 
-  // ===== E 自由記述 =====
-  form.addSectionHeaderItem().setTitle('E 自由記述');
+  // ===== E 研究（マイプロ）の進捗について =====
+  form.addSectionHeaderItem()
+    .setTitle('E 研究（マイプロ）の進捗について');
+
+  form.addMultipleChoiceItem()
+    .setTitle('Q２１：自分の研究テーマ（マイプロ）は、今学期で前進したと思いますか？')
+    .setChoiceValues(['①とても前進した', '②やや前進した', '③どちらとも言えない', '④あまり進まなかった', '⑤ほとんど進まなかった'])
+    .setRequired(true);
+  form.addParagraphTextItem().setTitle('Q２１ 上記回答した理由');
+
+  form.addMultipleChoiceItem()
+    .setTitle('Q２２：研究会の活動（輪読・発表・ファシリ・グループワークなど）は、あなた自身の研究の役に立ちましたか？')
+    .setChoiceValues(['①とても役に立った', '②やや役に立った', '③どちらとも言えない', '④あまり役に立たなかった', '⑤役に立たなかった'])
+    .setRequired(true);
+  form.addParagraphTextItem()
+    .setTitle('Q２２ 具体的に役立った点／物足りなかった点があれば教えて下さい。');
 
   form.addParagraphTextItem()
-    .setTitle('Q２１：今後も「続けてほしい」と思うことを自由に記述して下さい。');
+    .setTitle('Q２３：現在の研究（マイプロ）の進捗状況を教えて下さい。')
+    .setHelpText('例：テーマ設定／先行研究レビュー／リサーチクエスチョン／調査・分析 など、どこまで進んだか。');
 
   form.addParagraphTextItem()
-    .setTitle('Q２２：今後「変えてほしい・改善してほしい」と思うことを自由に記述して下さい。');
+    .setTitle('Q２４：研究を進める上でつまずいている点・相談したいことがあれば教えて下さい。');
+
+  // ===== F 自由記述 =====
+  form.addSectionHeaderItem().setTitle('F 自由記述');
 
   form.addParagraphTextItem()
-    .setTitle('Q２３：その他、研究会のあり方や進め方についてご意見や要望があれば自由に記述して下さい。');
+    .setTitle('Q２５：今後も「続けてほしい」と思うことを自由に記述して下さい。');
+
+  form.addParagraphTextItem()
+    .setTitle('Q２６：今後「変えてほしい・改善してほしい」と思うことを自由に記述して下さい。');
+
+  form.addParagraphTextItem()
+    .setTitle('Q２７：その他、研究会のあり方や進め方についてご意見や要望があれば自由に記述して下さい。');
 
   // ===== 出力 =====
   Logger.log('✅ フォームを作成しました（詳細版）');

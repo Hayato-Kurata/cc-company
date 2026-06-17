@@ -1,355 +1,475 @@
 # -*- coding: utf-8 -*-
 """指づくりワークショップ スタッフマニュアル(はじめてのスタッフ向け)
-ダーク・ホラー調 PowerPoint 生成スクリプト
+ダーク・ホラー調 / 図解・レイアウト重視の PowerPoint 生成スクリプト
 """
 from pptx import Presentation
-from pptx.util import Inches, Pt, Emu
+from pptx.util import Inches as In, Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.oxml.ns import qn
 
-# ---- パレット（ダーク・ホラー）----
-BG        = RGBColor(0x0B, 0x0B, 0x0D)   # ほぼ黒
-PANEL     = RGBColor(0x15, 0x15, 0x18)   # 少し明るい黒（パネル）
-BLOOD     = RGBColor(0xB7, 0x12, 0x1C)   # 血のような赤
-BLOOD_HI  = RGBColor(0xE6, 0x1A, 0x1A)   # 明るい赤(強調)
-INK       = RGBColor(0xEC, 0xEC, 0xEC)   # オフホワイト
-MUTE      = RGBColor(0x9A, 0x9A, 0x9E)   # ミュートグレー
-LINEC     = RGBColor(0x3A, 0x10, 0x12)   # 暗い赤(罫線)
+# ---- パレット ----
+BG       = RGBColor(0x0B, 0x0B, 0x0D)
+PANEL    = RGBColor(0x16, 0x16, 0x1A)
+PANEL2   = RGBColor(0x1E, 0x1E, 0x23)
+BLOOD    = RGBColor(0xB7, 0x12, 0x1C)
+BLOOD_HI = RGBColor(0xE6, 0x1A, 0x1A)
+BLOOD_DK = RGBColor(0x4A, 0x0A, 0x0E)
+INK      = RGBColor(0xEC, 0xEC, 0xEC)
+MUTE     = RGBColor(0x9A, 0x9A, 0x9E)
+LINEC    = RGBColor(0x40, 0x15, 0x18)
 
-JP_FONT   = "Yu Gothic UI"   # 日本語フォント(Officeに広く搭載)
-
-EMU_W = Inches(13.333)
-EMU_H = Inches(7.5)
+JP = "Yu Gothic UI"
+W, H = 13.333, 7.5
 
 
-def set_ea_font(run, name=JP_FONT):
-    """東アジア(日本語)フォントを明示指定。"""
+def ea(run, name=JP):
     run.font.name = name
     rPr = run._r.get_or_add_rPr()
     for tag in ("a:latin", "a:ea", "a:cs"):
         el = rPr.find(qn(tag))
         if el is None:
-            el = rPr.makeelement(qn(tag), {})
-            rPr.append(el)
+            el = rPr.makeelement(qn(tag), {}); rPr.append(el)
         el.set("typeface", name)
 
 
-def add_bg(slide, color=BG):
-    s = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, EMU_W, EMU_H)
-    s.fill.solid(); s.fill.fore_color.rgb = color
-    s.line.fill.background()
+def bg(slide, color=BG):
+    s = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, 0, 0, In(W), In(H))
+    s.fill.solid(); s.fill.fore_color.rgb = color; s.line.fill.background()
     s.shadow.inherit = False
-    # 背面へ
-    sp = s._element; sp.getparent().remove(sp)
-    slide.shapes._spTree.insert(2, sp)
-    return s
+    sp = s._element; sp.getparent().remove(sp); slide.shapes._spTree.insert(2, sp)
 
 
-def rect(slide, x, y, w, h, color, line=None):
-    s = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, x, y, w, h)
-    s.fill.solid(); s.fill.fore_color.rgb = color
-    if line is None:
-        s.line.fill.background()
-    else:
-        s.line.color.rgb = line; s.line.width = Pt(1)
+def rrect(slide, x, y, w, h, fill, line=None, radius=0.09, lw=1.0):
+    s = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, In(x), In(y), In(w), In(h))
+    try: s.adjustments[0] = radius
+    except Exception: pass
+    s.fill.solid(); s.fill.fore_color.rgb = fill
+    if line is None: s.line.fill.background()
+    else: s.line.color.rgb = line; s.line.width = Pt(lw)
     s.shadow.inherit = False
     return s
 
 
-def textbox(slide, x, y, w, h, anchor=MSO_ANCHOR.TOP):
-    tb = slide.shapes.add_textbox(x, y, w, h)
-    tf = tb.text_frame
-    tf.word_wrap = True
-    tf.vertical_anchor = anchor
-    tf.margin_left = 0; tf.margin_right = 0
-    tf.margin_top = 0; tf.margin_bottom = 0
-    return tf
+def rect(slide, x, y, w, h, fill):
+    s = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, In(x), In(y), In(w), In(h))
+    s.fill.solid(); s.fill.fore_color.rgb = fill; s.line.fill.background()
+    s.shadow.inherit = False
+    return s
 
 
-def run(p, text, size, color, bold=False, font=JP_FONT):
-    r = p.add_run(); r.text = text
-    r.font.size = Pt(size); r.font.bold = bold
-    r.font.color.rgb = color
-    set_ea_font(r, font)
-    return r
+def tb(slide, x, y, w, h, anchor=MSO_ANCHOR.TOP):
+    t = slide.shapes.add_textbox(In(x), In(y), In(w), In(h)).text_frame
+    t.word_wrap = True; t.vertical_anchor = anchor
+    t.margin_left = 0; t.margin_right = 0; t.margin_top = 0; t.margin_bottom = 0
+    return t
 
 
-# ---- スライド内容 ----
-# bullets: list of dict {t:text, lv:level(0/1), em:emphasis(bool), kicker:str|None}
-SLIDES = []
-
-SLIDES.append({
-    "kind": "cover",
-    "title": "指づくりワークショップ\nスタッフマニュアル",
-    "sub": "はじめてのスタッフ向け 完全ガイド",
-    "lines": [
-        "ピエロ大好き人間（@I_LOVE_Clown）× Steenz",
-        "自分の指の複製キーホルダーづくり ワークショップ",
-        "このスライドを読めば、はじめてでも当日動けます",
-    ],
-    "foot": "迷ったら「進行統括」に聞けばOK",
-})
-
-SLIDES.append({
-    "no": "01", "title": "このイベントって何をするの？",
-    "lead": "まず全体像をつかもう",
-    "bullets": [
-        {"t": "お客さんが「自分の指のキーホルダー」を作る体験ワークショップ"},
-        {"t": "料金は 3,000円／1回 約20分", "em": True},
-        {"t": "席は6席（180cmテーブル×2台・各3席）＋講師席"},
-        {"t": "主力イベントはデザインフェスタ／ニコニコ超会議"},
-        {"t": "スタッフのメイン業務＝ワークショップ運営＋お客さんへの声かけ集客"},
-    ],
-})
-
-SLIDES.append({
-    "no": "02", "title": "当日の1日の流れ（集合〜撤収）",
-    "lead": "10:00開場の場合の目安。実際の時刻は朝礼で共有",
-    "bullets": [
-        {"t": "集合・点呼（出展者証・身分証を忘れずに）"},
-        {"t": "搬入 → ブース設営 → ディスプレイ仕上げ"},
-        {"t": "レジ・釣り銭セット → WS道具スタンバイ・制作練習"},
-        {"t": "朝礼（最終ブリーフィング） → 開場"},
-        {"t": "開場中：接客・WS進行・物販・呼び込み"},
-        {"t": "閉場後：撤収・売上集計・搬出・振り返り"},
-    ],
-})
-
-SLIDES.append({
-    "no": "03", "title": "開場前にやること",
-    "lead": "開場までの準備の要点",
-    "bullets": [
-        {"t": "なるべくまとまって入場（バラバラだと時間がかかる）"},
-        {"t": "設営は進行統括の指示に従って動く"},
-        {"t": "釣り銭3〜4万円をセット（Steenzスタッフ2人で金額確認・1人では数えない）", "em": True},
-        {"t": "PayPay用QRコードを設置"},
-        {"t": "初参加スタッフは制作を1回通しで練習"},
-        {"t": "朝礼で：役割分担・動線・休憩ローテ・緊急時対応・SNSルールを確認"},
-    ],
-})
-
-SLIDES.append({
-    "no": "04", "title": "ワークショップの作り方①（材料・道具・席）",
-    "lead": "1人あたりに使う材料と道具",
-    "bullets": [
-        {"t": "かたと〜る 20g（型取り）"},
-        {"t": "エコフレックス35：A剤10g＋B剤10g（必ず同量！）", "em": True},
-        {"t": "キーホルダー金具 1個"},
-        {"t": "道具：計量カップ／紙コップ／混ぜ棒／振動機／爪楊枝／絵具・筆／接着剤／タイマー"},
-        {"t": "席は6席で確定＋整理券でタイムスロット運用（並ばせず時間に戻ってもらう）"},
-    ],
-})
-
-SLIDES.append({
-    "no": "05", "title": "ワークショップの進め方②（20分台本）",
-    "lead": "台本通りに進めれば、はじめてでも20分で回せる",
-    "bullets": [
-        {"t": "受付・アイスブレイク＋アレルギー確認（ラテックス・シリコン）", "kicker": "0-2分"},
-        {"t": "型取り（かたと〜る）→ 硬化を待つ（約10分・待ち時間は会話）", "kicker": "2-7分"},
-        {"t": "流し込み（A剤＋B剤を同量で混合 → 気泡抜き → 流す）", "kicker": "7-12分"},
-        {"t": "着色・仕上げ（ノーマル／ちょいグロ／ガチグロ）", "kicker": "12-17分"},
-        {"t": "金具取付・撮影・SNS＆アンケート案内・お見送り", "kicker": "17-20分"},
-    ],
-})
-
-SLIDES.append({
-    "no": "06", "title": "安全・NG事項（必ず守る）",
-    "lead": "ここだけは絶対に守ること",
-    "danger": True,
-    "bullets": [
-        {"t": "アレルギー申告者（ラテックス・シリコン）にはお断りする", "em": True},
-        {"t": "エコフレックスのA剤・B剤は必ず同量で混ぜる（比率ミスは未硬化の原因）", "em": True},
-        {"t": "材料を皮膚に長時間つけたまま放置しない"},
-        {"t": "WSの手順を勝手にアレンジしない"},
-        {"t": "動画撮影は参加者の許可を取ってから"},
-        {"t": "苦手・体調不良の素振りがあれば即中断、無理させない"},
-    ],
-})
-
-SLIDES.append({
-    "no": "07", "title": "接客・呼び込みトーク例",
-    "lead": "そのまま使える声かけのことば",
-    "bullets": [
-        {"t": "呼び込み「ちょいグロな“自分の指のキーホルダー”作れまーす！」「20分でできます！」"},
-        {"t": "通路を妨げない位置で声かけ。手が空いたら大きな声で集客"},
-        {"t": "硬化待ちの会話：作家（@I_LOVE_Clown）の紹介、人気作の話、お客さんの趣味から広げる"},
-        {"t": "会計時「お支払いは現金かPayPayです（カード不可）」「領収書いりますか？」"},
-    ],
-})
-
-SLIDES.append({
-    "no": "08", "title": "受付・会計のルール",
-    "lead": "お金まわりは特に慎重に",
-    "bullets": [
-        {"t": "受付は基本1名、残りはWS作業へ"},
-        {"t": "お釣りは3〜4万円（1,000円札中心＋5,000円札も数枚）"},
-        {"t": "現金は最初と最後にSteenzスタッフ2人で確認・1人では絶対数えない → 収益シートに記録", "em": True},
-        {"t": "予約客優先。当日枠は整理券で案内"},
-        {"t": "売上は現金／電子決済別にその場で即メモ"},
-        {"t": "値引き・サービスを個人判断でしない"},
-    ],
-})
-
-SLIDES.append({
-    "no": "09", "title": "SNS・アンケートの案内",
-    "lead": "お見送り時にお願いすること",
-    "bullets": [
-        {"t": "「Xに #指キーホルダー で投稿いただけると作家が見にいきます」と案内"},
-        {"t": "タグは #指キーホルダー ／ @I_LOVE_Clown"},
-        {"t": "アンケートは全イベント共通の1本（印刷QRコードを見せて案内）"},
-        {"t": "「1分で終わるアンケートにご協力お願いします！」"},
-        {"t": "強制はしない。答えてくれたら一言お礼"},
-    ],
-})
-
-SLIDES.append({
-    "no": "10", "title": "スタッフの基本ルール",
-    "lead": "参加前に必ず一読",
-    "bullets": [
-        {"t": "服装：黒基調・汚れてもいい服。スカート一律禁止。スニーカー（終日立ち仕事）"},
-        {"t": "持ち物：スマホ・モバイルバッテリー・飲み物軽食・着替え・常備薬絆創膏"},
-        {"t": "連絡：遅刻欠席は気づいた時点でLINEへ。朝が早い日は起きたら一言"},
-        {"t": "休憩：1人合計1時間。全員同時はNG、30分ずつずらして交代"},
-    ],
-})
-
-SLIDES.append({
-    "no": "11", "title": "お金のこと（報酬・交通費）",
-    "lead": "スタッフへの支払いについて",
-    "bullets": [
-        {"t": "報酬は日給 14,000円＋交通費", "em": True},
-        {"t": "イベント終了後に銀行振込（振込先は終了後に個別確認）"},
-        {"t": "交通費は「外部協力者用経費精算シート」に記入 → PDFにして渡邊さんへDM"},
-        {"t": "電車・バスは領収書不要"},
-        {"t": "詳しくは交通費・経費精算マニュアルを参照"},
-    ],
-})
-
-SLIDES.append({
-    "no": "12", "title": "緊急時対応",
-    "lead": "何かあったら、まず進行統括へエスカレーション",
-    "danger": True,
-    "bullets": [
-        {"t": "体調不良（軽度）：WS中断・休憩・水分。回復しなければ救護室へ"},
-        {"t": "体調不良（重度・出血）：救護室に即連絡、119の判断は早めに", "em": True},
-        {"t": "アレルギー反応：WS即中断・材料除去・救護室・LINE共有", "em": True},
-        {"t": "PayPay不調：現金切替を最優先"},
-        {"t": "釣り銭切れ：近隣ATM・両替所へ"},
-        {"t": "クレーム：その場で謝罪 → 進行統括へ"},
-    ],
-})
-
-SLIDES.append({
-    "no": "13", "title": "持ち物チェックリスト ＆ まとめ",
-    "lead": "搬入前の最終チェックと心構え",
-    "bullets": [
-        {"t": "WS用：材料・道具・見本サンプル・アレルギー確認用紙・タイマー"},
-        {"t": "ブース：出展者証・什器・看板・整理券・QRコード・台車・ゴミ袋"},
-        {"t": "会計：レジ箱・釣り銭・PayPay QR・予約表・領収書"},
-        {"t": "個人：スマホ・着替え・飲み物・常備薬"},
-        {"t": "困ったら・迷ったら、すべて進行統括へ。今日もよろしくお願いします！", "em": True},
-    ],
-})
+def line(tf, runs, first=False, align=PP_ALIGN.LEFT, sa=3, ls=1.05):
+    """runs: list of (text, size, color, bold)"""
+    p = tf.paragraphs[0] if first else tf.add_paragraph()
+    p.alignment = align; p.space_after = Pt(sa); p.space_before = Pt(0); p.line_spacing = ls
+    for txt, sz, col, bold in runs:
+        r = p.add_run(); r.text = txt
+        r.font.size = Pt(sz); r.font.bold = bold; r.font.color.rgb = col; ea(r)
+    return p
 
 
-# ---- 描画 ----
-prs = Presentation()
-prs.slide_width = EMU_W
-prs.slide_height = EMU_H
-blank = prs.slide_layouts[6]
+def one(tf, text, size, color, bold=False, align=PP_ALIGN.LEFT, first=True, sa=3, ls=1.05):
+    return line(tf, [(text, size, color, bold)], first=first, align=align, sa=sa, ls=ls)
 
-TOTAL = len(SLIDES)
 
-for idx, sd in enumerate(SLIDES):
-    slide = prs.slides.add_slide(blank)
-    add_bg(slide)
+prs = Presentation(); prs.slide_width = In(W); prs.slide_height = In(H)
+BLANK = prs.slide_layouts[6]
+PAGES = 14  # cover + 13
 
-    if sd.get("kind") == "cover":
-        # 左の太い血赤バー
-        rect(slide, 0, 0, Inches(0.35), EMU_H, BLOOD)
-        # うっすらパネル
-        rect(slide, Inches(0.9), Inches(1.7), Inches(11.5), Inches(0.06), BLOOD)
-        # タイトル
-        tf = textbox(slide, Inches(0.95), Inches(1.95), Inches(11.4), Inches(2.6))
-        first = True
-        for ln in sd["title"].split("\n"):
-            p = tf.paragraphs[0] if first else tf.add_paragraph()
-            first = False
-            p.line_spacing = 1.05
-            run(p, ln, 46, INK, bold=True)
-        # サブ
-        tf2 = textbox(slide, Inches(0.95), Inches(4.35), Inches(11.4), Inches(0.6))
-        p = tf2.paragraphs[0]
-        run(p, sd["sub"], 22, BLOOD_HI, bold=True)
-        # 行
-        tf3 = textbox(slide, Inches(0.95), Inches(5.05), Inches(11.4), Inches(1.6))
-        first = True
-        for ln in sd["lines"]:
-            p = tf3.paragraphs[0] if first else tf3.add_paragraph()
-            first = False
-            p.space_after = Pt(4)
-            run(p, "▸ ", 15, BLOOD_HI, bold=True)
-            run(p, ln, 15, MUTE)
-        # フッター
-        rect(slide, 0, Inches(6.95), EMU_W, Inches(0.55), PANEL)
-        tff = textbox(slide, Inches(0.95), Inches(6.95), Inches(11.4), Inches(0.55), MSO_ANCHOR.MIDDLE)
-        p = tff.paragraphs[0]
-        run(p, "⚠ ", 14, BLOOD_HI, bold=True)
-        run(p, sd["foot"], 14, INK, bold=True)
-        continue
 
-    # 通常スライド
-    danger = sd.get("danger")
-    head = BLOOD if not danger else BLOOD_HI
+def base(no, title, danger=False, caption=None):
+    s = prs.slides.add_slide(BLANK); bg(s)
+    rect(s, 0, 0, W, 1.4, PANEL); rect(s, 0, 1.4, W, 0.045, BLOOD)
+    t = tb(s, 0.55, 0.15, 1.5, 1.1, MSO_ANCHOR.MIDDLE)
+    one(t, no, 38, BLOOD, bold=True)
+    t = tb(s, 1.95, 0.15, 10.8, 1.1, MSO_ANCHOR.MIDDLE)
+    one(t, ("⚠ " if danger else "") + title, 27, INK, bold=True)
+    top = 1.72
+    if caption:
+        c = tb(s, 0.95, 1.55, 11.6, 0.4)
+        one(c, caption, 13, MUTE)
+        top = 2.05
+    # footer
+    f = tb(s, 0.95, 7.05, 9.0, 0.35, MSO_ANCHOR.MIDDLE)
+    one(f, "指づくりWS スタッフマニュアル", 9, MUTE)
+    return s, top
 
-    # ヘッダ帯
-    rect(slide, 0, 0, EMU_W, Inches(1.45), PANEL)
-    rect(slide, 0, Inches(1.45), EMU_W, Inches(0.05), BLOOD)
-    # ページ番号(大きく薄い赤)
-    tfn = textbox(slide, Inches(0.55), Inches(0.18), Inches(1.5), Inches(1.1), MSO_ANCHOR.MIDDLE)
-    p = tfn.paragraphs[0]
-    run(p, sd["no"], 40, BLOOD, bold=True)
-    # タイトル
-    tft = textbox(slide, Inches(1.9), Inches(0.2), Inches(10.9), Inches(1.05), MSO_ANCHOR.MIDDLE)
-    p = tft.paragraphs[0]
-    if danger:
-        run(p, "⚠ ", 28, BLOOD_HI, bold=True)
-    run(p, sd["title"], 28, INK, bold=True)
 
-    # リード文
-    y = Inches(1.75)
-    if sd.get("lead"):
-        tfl = textbox(slide, Inches(0.95), y, Inches(11.4), Inches(0.5))
-        p = tfl.paragraphs[0]
-        run(p, sd["lead"], 16, BLOOD_HI, bold=True)
-        y = Inches(2.45)
+def footer_pageno(s, idx):
+    p = tb(s, 11.4, 7.05, 1.4, 0.35, MSO_ANCHOR.MIDDLE)
+    one(p, f"{idx}/{PAGES-1}", 9, MUTE, align=PP_ALIGN.RIGHT)
 
-    # 箇条書き
-    tfb = textbox(slide, Inches(0.95), y, Inches(11.6), Inches(7.2) - y)
-    first = True
-    for b in sd["bullets"]:
-        p = tfb.paragraphs[0] if first else tfb.add_paragraph()
-        first = False
-        p.space_after = Pt(11)
-        p.line_spacing = 1.06
-        kicker = b.get("kicker")
-        if kicker:
-            run(p, kicker + "　", 18, BLOOD_HI, bold=True)
-        else:
-            run(p, "▌ ", 18, head, bold=True)
-        col = BLOOD_HI if b.get("em") else INK
-        run(p, b["t"], 18, col, bold=bool(b.get("em")))
 
-    # フッター
-    tff = textbox(slide, Inches(0.95), Inches(7.0), Inches(9.0), Inches(0.4), MSO_ANCHOR.MIDDLE)
-    p = tff.paragraphs[0]
-    run(p, "指づくりWS スタッフマニュアル", 10, MUTE)
-    tfp = textbox(slide, Inches(11.4), Inches(7.0), Inches(1.4), Inches(0.4), MSO_ANCHOR.MIDDLE)
-    p = tfp.paragraphs[0]; p.alignment = PP_ALIGN.RIGHT
-    run(p, f"{idx}/{TOTAL-1}", 10, MUTE)
+def cols(n, gap=0.3, left=0.95, right=0.95):
+    total = W - left - right
+    cw = (total - gap * (n - 1)) / n
+    return [left + i * (cw + gap) for i in range(n)], cw
+
+
+def card_header(s, x, y, w, label, fill=BLOOD):
+    """カード上部の見出し帯（角丸カードの上に小見出し）"""
+    h = tb(s, x + 0.25, y + 0.18, w - 0.5, 0.5)
+    one(h, label, 16, fill if fill != BLOOD else BLOOD_HI, bold=True)
+
+
+# ============================================================
+# 表紙
+# ============================================================
+s = prs.slides.add_slide(BLANK); bg(s)
+rect(s, 0, 0, 0.35, H, BLOOD)
+rect(s, 0.95, 1.75, 7.5, 0.07, BLOOD)
+t = tb(s, 1.0, 2.0, 11.4, 2.4)
+one(t, "指づくりワークショップ", 44, INK, bold=True, sa=2)
+one(t, "スタッフマニュアル", 44, INK, bold=True, first=False)
+t = tb(s, 1.0, 4.35, 11.4, 0.6)
+one(t, "はじめてのスタッフ向け 完全ガイド", 21, BLOOD_HI, bold=True)
+t = tb(s, 1.0, 5.1, 11.4, 1.6)
+for ln in ["ピエロ大好き人間（@I_LOVE_Clown）× Steenz",
+           "自分の指の複製キーホルダーづくり ワークショップ",
+           "このスライドを読めば、はじめてでも当日動けます"]:
+    one(t, "▸  " + ln, 15, MUTE, first=(ln.startswith("ピエロ")), sa=5)
+rect(s, 0, 6.95, W, 0.55, PANEL)
+t = tb(s, 1.0, 6.95, 11.4, 0.55, MSO_ANCHOR.MIDDLE)
+line(t, [("⚠  ", 14, BLOOD_HI, True), ("迷ったら「進行統括」に聞けばOK", 14, INK, True)], first=True)
+
+# ============================================================
+# 01 概要 — スタッツタイル + メイン業務バンド
+# ============================================================
+s, top = base("01", "このイベントって何をするの？", caption="お客さんが「自分の指のキーホルダー」を作る体験ワークショップ")
+xs, cw = cols(4)
+stats = [("3,000円", "1回の料金"), ("約20分", "所要時間"), ("6席", "180cm×2台・各3席"), ("＋講師席", "講師1席")]
+for x, (big, lab) in zip(xs, stats):
+    rrect(s, x, top + 0.15, cw, 1.9, PANEL, line=LINEC)
+    t = tb(s, x, top + 0.45, cw, 0.9, MSO_ANCHOR.MIDDLE)
+    one(t, big, 30, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER)
+    t = tb(s, x, top + 1.45, cw, 0.5, MSO_ANCHOR.MIDDLE)
+    one(t, lab, 13, MUTE, align=PP_ALIGN.CENTER)
+by = top + 2.35
+rrect(s, 0.95, by, W - 1.9, 1.85, PANEL, line=LINEC)
+card_header(s, 0.95, by, W - 1.9, "スタッフのメイン業務")
+t = tb(s, 1.3, by + 0.75, W - 2.6, 1.0)
+line(t, [("① ", 17, BLOOD_HI, True), ("ワークショップの運営", 17, INK, True), ("（WS進行・受付）", 15, MUTE, False)], first=True, sa=8)
+line(t, [("② ", 17, BLOOD_HI, True), ("お客さんへの声かけ・集客", 17, INK, True), ("（手が空いたら大きな声で）", 15, MUTE, False)])
+t = tb(s, 1.3, by + 1.45, W - 2.6, 0.4)
+one(t, "主力イベント：デザインフェスタ／ニコニコ超会議", 12, MUTE)
+footer_pageno(s, 1)
+
+# ============================================================
+# 02 当日の流れ — 3フェーズ・タイムライン
+# ============================================================
+s, top = base("02", "当日の1日の流れ（集合〜撤収）", caption="10:00開場の場合の目安。実際の時刻は朝礼で共有します")
+phases = [
+    ("開場前", ["集合・点呼（証類を忘れずに）", "搬入 → ブース設営", "釣り銭・WS道具の準備", "朝礼（最終ブリーフィング）"]),
+    ("開場中", ["接客・WS進行", "物販・呼び込み", "予約客を優先", "昼休憩は交代で（同時はNG）"]),
+    ("閉場後", ["撤収・ブース掃除", "売上集計（2人で）", "搬出（レンタカー）", "振り返り・解散"]),
+]
+xs, cw = cols(3, gap=0.4)
+ch = 4.3
+for x, (ph, items) in zip(xs, phases):
+    rrect(s, x, top + 0.1, cw, ch, PANEL, line=LINEC)
+    rrect(s, x, top + 0.1, cw, 0.6, BLOOD, radius=0.12)
+    t = tb(s, x, top + 0.13, cw, 0.55, MSO_ANCHOR.MIDDLE)
+    one(t, ph, 17, INK, bold=True, align=PP_ALIGN.CENTER)
+    t = tb(s, x + 0.3, top + 0.95, cw - 0.55, ch - 1.0)
+    for i, it in enumerate(items):
+        line(t, [("▌ ", 14, BLOOD_HI, True), (it, 14, INK, False)], first=(i == 0), sa=10, ls=1.05)
+footer_pageno(s, 2)
+
+# ============================================================
+# 03 開場前にやること — 番号タイル 2×3
+# ============================================================
+s, top = base("03", "開場前にやること", caption="開場までの準備の要点")
+items = [
+    ("1", "なるべくまとまって入場", "バラバラだと時間がかかる", False),
+    ("2", "設営は進行統括の指示で", "勝手に動かない", False),
+    ("3", "釣り銭3〜4万円を2人で確認", "1人では数えない", True),
+    ("4", "PayPay用QRコードを設置", "現金＋PayPayのみ", False),
+    ("5", "初参加スタッフは1回練習", "通しで制作してみる", False),
+    ("6", "朝礼で最終確認", "役割・動線・休憩・緊急時・SNS", False),
+]
+xs, cw = cols(2, gap=0.5)
+rh = 1.4; gy = 0.25
+for i, (num, ttl, sub, em) in enumerate(items):
+    col = i % 2; row = i // 2
+    x = xs[col]; y = top + 0.1 + row * (rh + gy)
+    rrect(s, x, y, cw, rh, PANEL2 if em else PANEL, line=BLOOD if em else LINEC, lw=1.5 if em else 1.0)
+    t = tb(s, x + 0.25, y, 1.1, rh, MSO_ANCHOR.MIDDLE)
+    one(t, num, 34, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER)
+    t = tb(s, x + 1.3, y + 0.22, cw - 1.5, rh - 0.4, MSO_ANCHOR.MIDDLE)
+    one(t, ttl, 16, BLOOD_HI if em else INK, bold=True, sa=4)
+    one(t, sub, 12, MUTE, first=False)
+footer_pageno(s, 3)
+
+# ============================================================
+# 04 材料・道具・席
+# ============================================================
+s, top = base("04", "ワークショップの作り方①（材料・道具・席）", caption="1人あたりに使う材料と道具")
+# 左：材料カード
+lw_ = 5.7
+rrect(s, 0.95, top + 0.1, lw_, 4.3, PANEL, line=LINEC)
+card_header(s, 0.95, top + 0.1, lw_, "1人分の材料")
+mats = [("かたと〜る", "20g", False), ("エコフレックス35", "A剤10g＋B剤10g（同量！）", True), ("キーホルダー金具", "1個", False)]
+yy = top + 0.85
+for name, qty, em in mats:
+    rrect(s, 1.25, yy, lw_ - 0.6, 1.0, PANEL2, line=BLOOD if em else LINEC, lw=1.5 if em else 1.0)
+    t = tb(s, 1.5, yy, lw_ - 1.0, 1.0, MSO_ANCHOR.MIDDLE)
+    one(t, name, 16, INK, bold=True, sa=3)
+    one(t, qty, 14, BLOOD_HI if em else MUTE, bold=em, first=False)
+    yy += 1.12
+# 右上：道具
+rx = 0.95 + lw_ + 0.4; rw = W - 0.95 - rx
+rrect(s, rx, top + 0.1, rw, 2.5, PANEL, line=LINEC)
+card_header(s, rx, top + 0.1, rw, "道具")
+t = tb(s, rx + 0.3, top + 0.8, rw - 0.6, 1.7)
+for ln in ["計量カップ／紙コップ（小）", "混ぜ棒（ハンドミキサー）／振動機", "爪楊枝／絵具・筆・パレット", "接着剤／タイマー"]:
+    one(t, "・ " + ln, 14, INK, first=(ln.startswith("計量")), sa=6)
+# 右下：席
+rrect(s, rx, top + 2.8, rw, 1.6, PANEL, line=LINEC)
+card_header(s, rx, top + 2.8, rw, "席の運用")
+t = tb(s, rx + 0.3, top + 3.4, rw - 0.6, 1.0)
+line(t, [("6席で確定", 16, BLOOD_HI, True), ("（180cm×2台・各3席）", 13, MUTE, False)], first=True, sa=5)
+one(t, "整理券でタイムスロット運用（並ばせず時間に戻ってもらう）", 13, INK, first=False)
+footer_pageno(s, 4)
+
+# ============================================================
+# 05 20分台本 — 5ステップ・タイムライン
+# ============================================================
+s, top = base("05", "ワークショップの進め方②（20分台本）", caption="台本通りに進めれば、はじめてでも20分で回せる")
+steps = [
+    ("0-2分", "受付・アイスブレイク", "アレルギー確認\n（ラテックス・シリコン）"),
+    ("2-7分", "型取り", "かたと〜るで型取り\n硬化10分は会話で"),
+    ("7-12分", "流し込み", "A＋Bを同量で混合\n気泡抜き→流す"),
+    ("12-17分", "着色・仕上げ", "ノーマル／\nちょいグロ／ガチグロ"),
+    ("17-20分", "金具・お見送り", "撮影・SNS／\nアンケート案内"),
+]
+xs, cw = cols(5, gap=0.25)
+chh = 4.2
+for i, (x, (bdg, ttl, note)) in enumerate(zip(xs, steps)):
+    y = top + 0.4
+    rrect(s, x, y, cw, chh, PANEL, line=LINEC)
+    rrect(s, x + 0.15, y + 0.2, cw - 0.3, 0.55, BLOOD, radius=0.18)
+    t = tb(s, x, y + 0.23, cw, 0.5, MSO_ANCHOR.MIDDLE)
+    one(t, bdg, 14, INK, bold=True, align=PP_ALIGN.CENTER)
+    t = tb(s, x + 0.15, y + 1.0, cw - 0.3, 1.0, MSO_ANCHOR.MIDDLE)
+    one(t, ttl, 15, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER, ls=1.0)
+    t = tb(s, x + 0.15, y + 2.0, cw - 0.3, chh - 2.1)
+    for j, nl in enumerate(note.split("\n")):
+        one(t, nl, 12, INK, first=(j == 0), align=PP_ALIGN.CENTER, sa=2, ls=1.05)
+    if i < 4:
+        a = tb(s, x + cw - 0.02, y + 0.2, 0.3, 0.55, MSO_ANCHOR.MIDDLE)
+        one(a, "›", 22, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER)
+footer_pageno(s, 5)
+
+# ============================================================
+# 06 安全・NG — 警告カード 2×3
+# ============================================================
+s, top = base("06", "安全・NG事項（必ず守る）", danger=True, caption="ここだけは絶対に守ること")
+ng = [
+    ("アレルギー申告者はお断り", "ラテックス・シリコン", True),
+    ("A剤・B剤は必ず同量", "比率ミスは未硬化の原因", True),
+    ("材料を皮膚に放置しない", "長時間つけたままNG", False),
+    ("手順を勝手にアレンジしない", "台本どおりに", False),
+    ("動画撮影は許可を取ってから", "参加者の同意必須", False),
+    ("苦手・不調の素振りは即中断", "無理させない", False),
+]
+xs, cw = cols(2, gap=0.5)
+rh = 1.4; gy = 0.22
+for i, (ttl, sub, em) in enumerate(ng):
+    col = i % 2; row = i // 2
+    x = xs[col]; y = top + 0.1 + row * (rh + gy)
+    rrect(s, x, y, cw, rh, PANEL2 if em else PANEL, line=BLOOD_HI if em else LINEC, lw=1.5 if em else 1.0)
+    t = tb(s, x + 0.25, y, 0.9, rh, MSO_ANCHOR.MIDDLE)
+    one(t, "⚠", 26, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER)
+    t = tb(s, x + 1.1, y + 0.22, cw - 1.3, rh - 0.4, MSO_ANCHOR.MIDDLE)
+    one(t, ttl, 16, BLOOD_HI if em else INK, bold=True, sa=4)
+    one(t, sub, 12, MUTE, first=False)
+footer_pageno(s, 6)
+
+# ============================================================
+# 07 接客トーク — 3つの吹き出しカード
+# ============================================================
+s, top = base("07", "接客・呼び込みトーク例", caption="そのまま使える声かけのことば")
+talks = [
+    ("呼び込み", ["「ちょいグロな“自分の指のキーホルダー”作れまーす！」", "「20分でできます！」　※通路を妨げない位置で"]),
+    ("硬化待ちの会話", ["作家（@I_LOVE_Clown）の紹介、人気作の話", "お客さんの指輪・ネイル・推し趣味から広げる"]),
+    ("会計時", ["「お支払いは現金かPayPayです（カード不可）」", "「領収書いりますか？」"]),
+]
+yy = top + 0.15; chh = 1.45
+for ttl, lns in talks:
+    rrect(s, 0.95, yy, W - 1.9, chh, PANEL, line=LINEC)
+    rrect(s, 1.2, yy + 0.25, 2.6, 0.55, BLOOD, radius=0.18)
+    t = tb(s, 1.2, yy + 0.28, 2.6, 0.5, MSO_ANCHOR.MIDDLE)
+    one(t, ttl, 15, INK, bold=True, align=PP_ALIGN.CENTER)
+    t = tb(s, 4.1, yy + 0.2, W - 4.1 - 1.2, chh - 0.4, MSO_ANCHOR.MIDDLE)
+    for j, ln in enumerate(lns):
+        one(t, ln, 14, INK, first=(j == 0), sa=6)
+    yy += chh + 0.25
+footer_pageno(s, 7)
+
+# ============================================================
+# 08 受付・会計 — 重要ルール強調 + チップ
+# ============================================================
+s, top = base("08", "受付・会計のルール", caption="お金まわりは特に慎重に")
+rrect(s, 0.95, top + 0.1, W - 1.9, 1.7, PANEL2, line=BLOOD_HI, lw=2.0)
+t = tb(s, 1.3, top + 0.1, 1.2, 1.7, MSO_ANCHOR.MIDDLE)
+one(t, "🔒", 34, INK, align=PP_ALIGN.CENTER)
+t = tb(s, 2.5, top + 0.3, W - 2.5 - 1.2, 1.3, MSO_ANCHOR.MIDDLE)
+one(t, "現金は最初と最後に Steenzスタッフ2人で確認", 19, BLOOD_HI, bold=True, sa=4)
+one(t, "1人では絶対に数えない → 確認額は収益シートに記録", 15, INK, first=False)
+chips = ["受付は基本1名（残りはWS）", "お釣り3〜4万円（5,000円札も）", "予約客を優先・当日枠は整理券",
+         "売上は現金／電子別に即メモ", "値引き・サービスは個人判断しない", "PayPay不調は現金切替を最優先"]
+xs, cw = cols(2, gap=0.5)
+ry = top + 2.05
+for i, c in enumerate(chips):
+    col = i % 2; row = i // 2
+    x = xs[col]; y = ry + row * 0.78
+    rrect(s, x, y, cw, 0.62, PANEL, line=LINEC)
+    t = tb(s, x + 0.25, y, cw - 0.4, 0.62, MSO_ANCHOR.MIDDLE)
+    line(t, [("▌ ", 13, BLOOD_HI, True), (c, 13.5, INK, False)], first=True)
+footer_pageno(s, 8)
+
+# ============================================================
+# 09 SNS・アンケート — 2大カード
+# ============================================================
+s, top = base("09", "SNS・アンケートの案内", caption="お見送り時にお願いすること")
+xs, cw = cols(2, gap=0.5)
+# SNS
+x = xs[0]
+rrect(s, x, top + 0.15, cw, 4.0, PANEL, line=LINEC)
+rrect(s, x, top + 0.15, cw, 0.7, BLOOD, radius=0.12)
+t = tb(s, x, top + 0.18, cw, 0.62, MSO_ANCHOR.MIDDLE)
+one(t, "SNS", 18, INK, bold=True, align=PP_ALIGN.CENTER)
+t = tb(s, x + 0.35, top + 1.1, cw - 0.7, 3.0)
+one(t, "「Xに投稿いただけると", 15, INK, sa=2)
+one(t, "　作家が見にいきます」と案内", 15, INK, first=False, sa=12)
+rrect(s, x + 0.35, top + 2.05, cw - 0.7, 0.6, PANEL2, line=BLOOD)
+tt = tb(s, x + 0.35, top + 2.05, cw - 0.7, 0.6, MSO_ANCHOR.MIDDLE)
+one(tt, "#指キーホルダー", 15, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER)
+rrect(s, x + 0.35, top + 2.8, cw - 0.7, 0.6, PANEL2, line=BLOOD)
+tt = tb(s, x + 0.35, top + 2.8, cw - 0.7, 0.6, MSO_ANCHOR.MIDDLE)
+one(tt, "@I_LOVE_Clown", 15, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER)
+# アンケート
+x = xs[1]
+rrect(s, x, top + 0.15, cw, 4.0, PANEL, line=LINEC)
+rrect(s, x, top + 0.15, cw, 0.7, BLOOD, radius=0.12)
+t = tb(s, x, top + 0.18, cw, 0.62, MSO_ANCHOR.MIDDLE)
+one(t, "アンケート", 18, INK, bold=True, align=PP_ALIGN.CENTER)
+t = tb(s, x + 0.35, top + 1.1, cw - 0.7, 3.0)
+for j, ln in enumerate(["全イベント共通の1本（毎回作らない）",
+                         "印刷QRコードを見せて案内",
+                         "「1分で終わります！」とひと言",
+                         "強制はしない。答えてくれたらお礼"]):
+    line(t, [("▸ ", 14, BLOOD_HI, True), (ln, 14, INK, False)], first=(j == 0), sa=12)
+footer_pageno(s, 9)
+
+# ============================================================
+# 10 基本ルール — 2×2 タイル
+# ============================================================
+s, top = base("10", "スタッフの基本ルール", caption="参加前に必ず一読")
+tiles = [
+    ("服装", ["黒基調・汚れてもいい服", "スカート一律禁止", "スニーカー（終日立ち仕事）"]),
+    ("持ち物", ["スマホ・モバイルバッテリー", "飲み物・軽食・着替え", "常備薬・絆創膏"]),
+    ("連絡", ["遅刻欠席は気づいた時点でLINE", "朝が早い日は起きたら一言", "調整は進行統括が対応"]),
+    ("休憩", ["1人あたり合計1時間", "全員同時はNG", "30分ずつずらして交代"]),
+]
+xs, cw = cols(2, gap=0.5)
+rh = 2.0; gy = 0.25
+for i, (ttl, lns) in enumerate(tiles):
+    col = i % 2; row = i // 2
+    x = xs[col]; y = top + 0.1 + row * (rh + gy)
+    rrect(s, x, y, cw, rh, PANEL, line=LINEC)
+    rrect(s, x + 0.3, y + 0.28, 1.5, 0.55, BLOOD, radius=0.18)
+    tt = tb(s, x + 0.3, y + 0.31, 1.5, 0.5, MSO_ANCHOR.MIDDLE)
+    one(tt, ttl, 15, INK, bold=True, align=PP_ALIGN.CENTER)
+    t = tb(s, x + 0.35, y + 1.0, cw - 0.7, rh - 1.0)
+    for j, ln in enumerate(lns):
+        line(t, [("・ ", 13, BLOOD_HI, True), (ln, 13.5, INK, False)], first=(j == 0), sa=5)
+footer_pageno(s, 10)
+
+# ============================================================
+# 11 お金 — 大きな数字 + フロー
+# ============================================================
+s, top = base("11", "お金のこと（報酬・交通費）", caption="スタッフへの支払いについて")
+rrect(s, 0.95, top + 0.2, 4.4, 3.6, PANEL2, line=BLOOD, lw=2.0)
+t = tb(s, 0.95, top + 0.7, 4.4, 1.4, MSO_ANCHOR.MIDDLE)
+one(t, "日給", 16, MUTE, align=PP_ALIGN.CENTER, sa=2)
+one(t, "14,000円", 40, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER, first=False)
+t = tb(s, 0.95, top + 2.5, 4.4, 0.8, MSO_ANCHOR.MIDDLE)
+one(t, "＋ 交通費", 20, INK, bold=True, align=PP_ALIGN.CENTER)
+rx = 5.8; rw = W - 0.95 - rx
+flow = [("受け取り方", "イベント終了後に銀行振込（振込先は終了後に個別確認）"),
+        ("交通費の精算", "「外部協力者用 経費精算シート」に記入 → PDF化 → 渡邊さんへDM"),
+        ("領収書", "電車・バスは領収書不要")]
+yy = top + 0.2
+for i, (h, b) in enumerate(flow):
+    rrect(s, rx, yy, rw, 1.05, PANEL, line=LINEC)
+    t = tb(s, rx + 0.3, yy + 0.15, rw - 0.6, 0.8, MSO_ANCHOR.MIDDLE)
+    one(t, h, 14, BLOOD_HI, bold=True, sa=3)
+    one(t, b, 13, INK, first=False, ls=1.05)
+    yy += 1.2
+footer_pageno(s, 11)
+
+# ============================================================
+# 12 緊急時 — 状況→対応 テーブル
+# ============================================================
+s, top = base("12", "緊急時対応", danger=True, caption="迷わず進行統括へエスカレーション")
+rows = [
+    ("体調不良（軽度）", "WS中断・休憩・水分。回復しなければ救護室へ", False),
+    ("体調不良（重度・出血）", "救護室に即連絡、119の判断は早めに", True),
+    ("アレルギー反応", "WS即中断・材料除去・救護室・LINE共有", True),
+    ("PayPay不調", "現金切替を最優先（復旧は後回し）", False),
+    ("釣り銭切れ", "近隣ATM・両替所へ", False),
+    ("クレーム", "その場で謝罪 → 進行統括へ", False),
+]
+tx = 0.95; tw = W - 1.9; c1 = 3.6; rh = 0.62; y = top + 0.15
+rrect(s, tx, y, tw, rh, BLOOD, radius=0.06)
+t = tb(s, tx + 0.25, y, c1, rh, MSO_ANCHOR.MIDDLE); one(t, "状況", 15, INK, bold=True)
+t = tb(s, tx + c1 + 0.25, y, tw - c1 - 0.4, rh, MSO_ANCHOR.MIDDLE); one(t, "対応", 15, INK, bold=True)
+y += rh + 0.08
+for stt, resp, em in rows:
+    rrect(s, tx, y, tw, rh, PANEL2 if em else PANEL, line=BLOOD_HI if em else LINEC, lw=1.5 if em else 1.0)
+    t = tb(s, tx + 0.25, y, c1, rh, MSO_ANCHOR.MIDDLE)
+    one(t, stt, 13.5, BLOOD_HI if em else INK, bold=True)
+    t = tb(s, tx + c1 + 0.25, y, tw - c1 - 0.4, rh, MSO_ANCHOR.MIDDLE)
+    one(t, resp, 13.5, INK)
+    y += rh + 0.08
+footer_pageno(s, 12)
+
+# ============================================================
+# 13 持ち物 + まとめ — 4列チェックリスト + 締めバンド
+# ============================================================
+s, top = base("13", "持ち物チェックリスト ＆ まとめ", caption="搬入前の最終チェック")
+checks = [
+    ("WS用", ["材料一式", "道具一式", "見本サンプル", "アレルギー確認用紙", "タイマー"]),
+    ("ブース", ["出展者証・什器", "看板・POP", "整理券・QR", "台車", "ゴミ袋"]),
+    ("会計", ["レジ箱・釣り銭", "PayPay QR", "予約表・受付表", "領収書", "売上メモ"]),
+    ("個人", ["スマホ・充電器", "着替え", "飲み物・軽食", "常備薬・絆創膏", ""]),
+]
+xs, cw = cols(4, gap=0.3)
+chh = 3.3
+for x, (ttl, items) in zip(xs, checks):
+    rrect(s, x, top + 0.1, cw, chh, PANEL, line=LINEC)
+    rrect(s, x, top + 0.1, cw, 0.55, BLOOD, radius=0.14)
+    t = tb(s, x, top + 0.13, cw, 0.5, MSO_ANCHOR.MIDDLE)
+    one(t, ttl, 15, INK, bold=True, align=PP_ALIGN.CENTER)
+    t = tb(s, x + 0.25, top + 0.85, cw - 0.4, chh - 0.9)
+    fr = True
+    for it in items:
+        if not it: continue
+        line(t, [("□ ", 13, BLOOD_HI, True), (it, 13, INK, False)], first=fr, sa=7); fr = False
+rrect(s, 0.95, top + 3.65, W - 1.9, 0.8, BLOOD, radius=0.1)
+t = tb(s, 0.95, top + 3.65, W - 1.9, 0.8, MSO_ANCHOR.MIDDLE)
+one(t, "困ったら・迷ったら、すべて進行統括へ。今日もよろしくお願いします！", 17, INK, bold=True, align=PP_ALIGN.CENTER)
+footer_pageno(s, 13)
 
 out = "指づくりWS_スタッフマニュアル_ダーク.pptx"
 prs.save(out)
-print("saved:", out)
+print("saved:", out, "/ slides:", len(prs.slides._sldIdLst))

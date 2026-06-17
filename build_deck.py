@@ -143,23 +143,22 @@ line(t, [("⚠  ", 14, BLOOD_HI, True), ("迷ったら「進行統括」に聞�
 # ============================================================
 # 01 概要 — スタッツタイル + メイン業務バンド
 # ============================================================
-s, top = base("01", "このイベントって何をするの？", caption="お客さんが「自分の指のキーホルダー」を作る体験ワークショップ")
+s, top = base("01", "このイベントって何をするの？", caption="指キーホルダーづくりの体験WS ＋ イラスト・作品の物販を行う")
 xs, cw = cols(4)
-stats = [("3,000円", "1回の料金"), ("約20分", "所要時間"), ("6席", "180cm×2台・各3席"), ("現金・PayPay", "カード不可")]
+stats = [("3,000円", "WS 1回の料金"), ("約20分", "所要時間の目安"), ("最大6席", "場所により変動・6席で十分"), ("現金・PayPay", "カード不可")]
 for x, (big, lab) in zip(xs, stats):
     rrect(s, x, top + 0.15, cw, 1.9, PANEL, line=LINEC)
-    t = tb(s, x, top + 0.45, cw, 0.9, MSO_ANCHOR.MIDDLE)
-    one(t, big, 30, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER)
-    t = tb(s, x, top + 1.45, cw, 0.5, MSO_ANCHOR.MIDDLE)
-    one(t, lab, 13, MUTE, align=PP_ALIGN.CENTER)
+    t = tb(s, x, top + 0.5, cw, 0.85, MSO_ANCHOR.MIDDLE)
+    one(t, big, 27, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER)
+    t = tb(s, x, top + 1.42, cw, 0.5, MSO_ANCHOR.MIDDLE)
+    one(t, lab, 12, MUTE, align=PP_ALIGN.CENTER)
 by = top + 2.35
-rrect(s, 0.95, by, W - 1.9, 1.85, PANEL, line=LINEC)
+rrect(s, 0.95, by, W - 1.9, 1.95, PANEL, line=LINEC)
 card_header(s, 0.95, by, W - 1.9, "スタッフのメイン業務")
-t = tb(s, 1.3, by + 0.75, W - 2.6, 1.0)
-line(t, [("① ", 17, BLOOD_HI, True), ("ワークショップの運営", 17, INK, True), ("（WS進行・受付）", 15, MUTE, False)], first=True, sa=8)
-line(t, [("② ", 17, BLOOD_HI, True), ("お客さんへの声かけ・集客", 17, INK, True), ("（手が空いたら大きな声で）", 15, MUTE, False)])
-t = tb(s, 1.3, by + 1.45, W - 2.6, 0.4)
-one(t, "主力イベント：デザインフェスタ／ニコニコ超会議", 12, MUTE)
+t = tb(s, 1.3, by + 0.7, W - 2.6, 1.2)
+line(t, [("① ", 16, BLOOD_HI, True), ("ワークショップの運営", 16, INK, True), ("（進行・受付）", 14, MUTE, False)], first=True, sa=6)
+line(t, [("② ", 16, BLOOD_HI, True), ("物販対応", 16, INK, True), ("（イラスト・作品の販売）", 14, MUTE, False)], sa=6)
+line(t, [("③ ", 16, BLOOD_HI, True), ("お客さんへの声かけ・集客", 16, INK, True), ("（手が空いたら大きな声で）", 14, MUTE, False)])
 footer_pageno(s, 1)
 
 # ============================================================
@@ -216,7 +215,7 @@ s, top = base("04", "ワークショップの作り方①（材料・道具・�
 lw_ = 5.7
 rrect(s, 0.95, top + 0.1, lw_, 4.3, PANEL, line=LINEC)
 card_header(s, 0.95, top + 0.1, lw_, "1人分の材料")
-mats = [("かたと〜る", "20g", False), ("エコフレックス35", "A剤10g＋B剤10g（同量！）", True), ("キーホルダー金具", "1個", False)]
+mats = [("かたと〜る", "型取り用（真空脱泡して使う）", False), ("エコフレックス35", "A剤＋B剤を必ず同量", True), ("クリップ＋チェーンボール", "1セット（型に設置）", False)]
 yy = top + 0.85
 for name, qty, em in mats:
     rrect(s, 1.25, yy, lw_ - 0.6, 1.0, PANEL2, line=BLOOD if em else LINEC, lw=1.5 if em else 1.0)
@@ -229,43 +228,41 @@ rx = 0.95 + lw_ + 0.4; rw = W - 0.95 - rx
 rrect(s, rx, top + 0.1, rw, 2.5, PANEL, line=LINEC)
 card_header(s, rx, top + 0.1, rw, "道具")
 t = tb(s, rx + 0.3, top + 0.8, rw - 0.6, 1.7)
-for ln in ["計量カップ／紙コップ（小）", "混ぜ棒（ハンドミキサー）／振動機", "爪楊枝／絵具・筆・パレット", "接着剤／タイマー"]:
+for ln in ["計量カップ／紙コップ（小）", "混ぜ棒（ハンドミキサー）", "真空脱泡機（かたと〜る用）", "爪楊枝／接着剤／タイマー"]:
     one(t, "・ " + ln, 14, INK, first=(ln.startswith("計量")), sa=6)
 # 右下：席
 rrect(s, rx, top + 2.8, rw, 1.6, PANEL, line=LINEC)
 card_header(s, rx, top + 2.8, rw, "席の運用")
 t = tb(s, rx + 0.3, top + 3.4, rw - 0.6, 1.0)
-line(t, [("6席で確定", 16, BLOOD_HI, True), ("（180cm×2台・各3席）", 13, MUTE, False)], first=True, sa=5)
+line(t, [("最大6席", 16, BLOOD_HI, True), ("（場所・イベントで変動。6席以上は不要）", 13, MUTE, False)], first=True, sa=5)
 one(t, "整理券でタイムスロット運用（並ばせず時間に戻ってもらう）", 13, INK, first=False)
 footer_pageno(s, 4)
 
 # ============================================================
 # 05 20分台本 — 5ステップ・タイムライン
 # ============================================================
-s, top = base("05", "ワークショップの進め方②（20分台本）", caption="台本通りに進めれば、はじめてでも20分で回せる")
+s, top = base("05", "ワークショップの進め方（受付〜完成）", caption="受付から完成まで6ステップ。アイスブレイクは挟まず進める")
 steps = [
-    ("0-2分", "受付・アイスブレイク", "アレルギー確認\n（ラテックス・シリコン）"),
-    ("2-7分", "型取り", "かたと〜るで型取り\n硬化10分は会話で"),
-    ("7-12分", "流し込み", "A＋Bを同量で混合\n気泡抜き→流す"),
-    ("12-17分", "着色・仕上げ", "ノーマル／\nちょいグロ／ガチグロ"),
-    ("17-20分", "金具・お見送り", "撮影・SNS／\nアンケート案内"),
+    ("①", "受付と誘導", "普通に受付をして席へ誘導する", False),
+    ("②", "準備と検討", "スタッフがかたと〜る（型取り材）を準備／その間にお客さんはどの指で作るか考える", False),
+    ("③", "型取り", "かたと〜るを真空脱泡機で気泡抜き → 容器に指を入れて型取り。どの指でもOK／同時2本は不可・1本ずつ", True),
+    ("④", "成形（流し込み）", "型が固まったら指を抜く → エコフレックスをA＋B同量で混ぜて型に流し込む（エコフレックスは脱泡しない）", False),
+    ("⑤", "仕上げ", "クリップ＋チェーンボールを型に設置 → 硬化を待つ", False),
+    ("⑥", "完了", "指（成形物）を取り出して完成。着色は行わない", True),
 ]
-xs, cw = cols(5, gap=0.25)
-chh = 4.2
-for i, (x, (bdg, ttl, note)) in enumerate(zip(xs, steps)):
-    y = top + 0.4
-    rrect(s, x, y, cw, chh, PANEL, line=LINEC)
-    rrect(s, x + 0.15, y + 0.2, cw - 0.3, 0.55, BLOOD, radius=0.18)
-    t = tb(s, x, y + 0.23, cw, 0.5, MSO_ANCHOR.MIDDLE)
-    one(t, bdg, 14, INK, bold=True, align=PP_ALIGN.CENTER)
-    t = tb(s, x + 0.15, y + 1.0, cw - 0.3, 1.0, MSO_ANCHOR.MIDDLE)
-    one(t, ttl, 15, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER, ls=1.0)
-    t = tb(s, x + 0.15, y + 2.0, cw - 0.3, chh - 2.1)
-    for j, nl in enumerate(note.split("\n")):
-        one(t, nl, 12, INK, first=(j == 0), align=PP_ALIGN.CENTER, sa=2, ls=1.05)
-    if i < 4:
-        a = tb(s, x + cw - 0.02, y + 0.2, 0.3, 0.55, MSO_ANCHOR.MIDDLE)
-        one(a, "›", 22, BLOOD_HI, bold=True, align=PP_ALIGN.CENTER)
+xs, cw = cols(3, gap=0.3)
+rh = 1.85; gy = 0.18
+for i, (num, ttl, note, em) in enumerate(steps):
+    x = xs[i % 3]; y = top + 0.05 + (i // 3) * (rh + gy)
+    rrect(s, x, y, cw, rh, PANEL2 if em else PANEL, line=BLOOD if em else LINEC, lw=1.5 if em else 1.0)
+    t = tb(s, x + 0.25, y + 0.2, cw - 0.5, 0.5)
+    line(t, [(num + "  ", 22, BLOOD_HI, True), (ttl, 16, INK, True)], first=True)
+    t = tb(s, x + 0.25, y + 0.82, cw - 0.5, rh - 0.9)
+    one(t, note, 12.5, BLOOD_HI if em else INK, ls=1.12)
+band = top + 0.05 + 2 * (rh + gy)
+rrect(s, 0.95, band, W - 1.9, 0.6, BLOOD, radius=0.12)
+t = tb(s, 0.95, band, W - 1.9, 0.6, MSO_ANCHOR.MIDDLE)
+one(t, "最後にアンケートの案内をして終了。着色なし／同時に2本は不可 に注意", 14, INK, bold=True, align=PP_ALIGN.CENTER)
 footer_pageno(s, 5)
 
 # ============================================================

@@ -99,7 +99,7 @@ def base(no, title, danger=False, caption=None):
         top = 2.05
     # footer
     f = tb(s, 0.95, 7.05, 9.0, 0.35, MSO_ANCHOR.MIDDLE)
-    one(f, "指づくりWS スタッフマニュアル", 9, MUTE)
+    one(f, "指づくりWS 当日マニュアル", 9, MUTE)
     return s, top
 
 
@@ -128,7 +128,7 @@ rect(s, 0, 0, 0.35, H, BLOOD)
 rect(s, 0.95, 1.75, 7.5, 0.07, BLOOD)
 t = tb(s, 1.0, 2.0, 11.4, 2.4)
 one(t, "指づくりワークショップ", 44, INK, bold=True, sa=2)
-one(t, "スタッフマニュアル", 44, INK, bold=True, first=False)
+one(t, "当日マニュアル", 44, INK, bold=True, first=False)
 t = tb(s, 1.0, 4.35, 11.4, 0.6)
 one(t, "はじめてのスタッフ向け 完全ガイド", 21, BLOOD_HI, bold=True)
 t = tb(s, 1.0, 5.1, 11.4, 1.6)
@@ -145,7 +145,7 @@ line(t, [("⚠  ", 14, BLOOD_HI, True), ("迷ったら「進行統括」に聞�
 # ============================================================
 s, top = base("01", "このイベントって何をするの？", caption="お客さんが「自分の指のキーホルダー」を作る体験ワークショップ")
 xs, cw = cols(4)
-stats = [("3,000円", "1回の料金"), ("約20分", "所要時間"), ("6席", "180cm×2台・各3席"), ("＋講師席", "講師1席")]
+stats = [("3,000円", "1回の料金"), ("約20分", "所要時間"), ("6席", "180cm×2台・各3席"), ("現金・PayPay", "カード不可")]
 for x, (big, lab) in zip(xs, stats):
     rrect(s, x, top + 0.15, cw, 1.9, PANEL, line=LINEC)
     t = tb(s, x, top + 0.45, cw, 0.9, MSO_ANCHOR.MIDDLE)
@@ -470,6 +470,6 @@ t = tb(s, 0.95, top + 3.65, W - 1.9, 0.8, MSO_ANCHOR.MIDDLE)
 one(t, "困ったら・迷ったら、すべて進行統括へ。今日もよろしくお願いします！", 17, INK, bold=True, align=PP_ALIGN.CENTER)
 footer_pageno(s, 13)
 
-out = "指づくりWS_スタッフマニュアル_ダーク.pptx"
+out = "指づくりWS_当日マニュアル_ダーク.pptx"
 prs.save(out)
 print("saved:", out, "/ slides:", len(prs.slides._sldIdLst))

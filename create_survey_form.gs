@@ -103,15 +103,10 @@ function createSurveyForm() {
     .setChoiceValues(['①とても良かった', '②やや良かった', '③どちらとも言えない', '④あまり良くなかった', '⑤良くなかった']);
   form.addParagraphTextItem().setTitle('Q９ 上記回答した理由');
 
-  form.addSectionHeaderItem()
-    .setTitle('Q１０：ファシリの準備時間について')
-    .setHelpText('1回あたりのファシリ係としての準備時間を教えて下さい。');
-  form.addTextItem().setTitle('本読み');
-  form.addTextItem().setTitle('ペアのファシリ係との打ち合わせ');
-  form.addTextItem().setTitle('先生との相談');
-  form.addTextItem().setTitle('課題作成');
-  form.addTextItem().setTitle('パワポ作成');
-  form.addTextItem().setTitle('合計時間');
+  form.addMultipleChoiceItem()
+    .setTitle('Q１０：ファシリの準備時間について（1回あたりの合計）')
+    .setHelpText('1回あたりのファシリ係としての準備時間（本読み・打ち合わせ・先生との相談・課題作成・パワポ作成などの合計）を教えて下さい。')
+    .setChoiceValues(['①1時間未満', '②1〜2時間', '③2〜4時間', '④4〜6時間', '⑤6時間以上']);
 
   form.addParagraphTextItem()
     .setTitle('Q１１：ファシリ内容について')

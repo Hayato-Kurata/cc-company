@@ -53,68 +53,48 @@ function createShiseidoForm() {
     .setTitle('Q2. その満足度を選んだ理由を教えてください。')
     .setRequired(false);
 
-  // ===== セクション2：参加前と参加後 =====
-  form.addPageBreakItem().setTitle('セクション2：参加前と参加後');
-
-  form.addScaleItem()
-    .setTitle('Q3. 参加する前、この会にどのくらい期待していましたか。')
-    .setBounds(1, 5)
-    .setLabels('まったく期待していなかった', 'とても期待していた')
-    .setRequired(true);
-
-  form.addMultipleChoiceItem()
-    .setTitle('Q4. 参加した後、その期待と比べてどうでしたか。')
-    .setChoiceValues([
-      '期待を大きく上回った',
-      '期待を上回った',
-      '期待どおりだった',
-      '期待を下回った',
-      '期待を大きく下回った'
-    ])
-    .setRequired(true);
-
-  // ===== セクション3：コンテンツごとの感想 =====
-  form.addPageBreakItem().setTitle('セクション3：コンテンツごとの感想');
+  // ===== セクション2：コンテンツごとの感想 =====
+  form.addPageBreakItem().setTitle('セクション2：コンテンツごとの感想');
 
   form.addGridItem()
-    .setTitle('Q5. 各コンテンツの満足度を教えてください。')
+    .setTitle('Q3. 各コンテンツの満足度を教えてください。')
     .setRows(CONTENTS)
     .setColumns(['とても良かった', '良かった', 'ふつう', 'いまひとつ', '参加していない'])
     .setRequired(false);
 
   form.addParagraphTextItem()
-    .setTitle('Q6. 特に良かったコンテンツと、その良かった点を教えてください。')
+    .setTitle('Q4. 特に良かったコンテンツと、その良かった点を教えてください。')
     .setRequired(false);
 
-  // ===== セクション4：これからについて =====
-  form.addPageBreakItem().setTitle('セクション4：これからについて');
+  // ===== セクション3：これからについて =====
+  form.addPageBreakItem().setTitle('セクション3：これからについて');
 
   form.addScaleItem()
-    .setTitle('Q7. この会に参加して、白斑とのつき合い方や気持ちに前向きな変化はありましたか。')
+    .setTitle('Q5. この会に参加して、白斑とのつき合い方や気持ちに前向きな変化はありましたか。')
     .setBounds(1, 5)
     .setLabels('まったくそう思わない', 'とてもそう思う')
     .setRequired(false);
 
   form.addMultipleChoiceItem()
-    .setTitle('Q8. 今後、白斑やカバーメイクに関する研究（アンケート・インタビュー等）にご協力いただけますか。')
+    .setTitle('Q6. 今後、白斑やカバーメイクに関する研究（アンケート・インタビュー等）にご協力いただけますか。')
     .setHelpText('匿名アンケートのため意向のみ伺います。実際にご協力いただける方は、別途ご案内する登録フォームからお申し込みください（任意・このアンケートとは紐づきません）。')
     .setChoiceValues(['はい', 'いいえ'])
     .setRequired(true);
 
-  // ===== セクション5：要望・自由記述・掲載について =====
-  form.addPageBreakItem().setTitle('セクション5：要望・自由記述・掲載について');
+  // ===== セクション4：要望・自由記述・掲載について =====
+  form.addPageBreakItem().setTitle('セクション4：要望・自由記述・掲載について');
 
   form.addParagraphTextItem()
-    .setTitle('Q9. 次回への要望・リクエストがあれば教えてください。')
+    .setTitle('Q7. 次回への要望・リクエストがあれば教えてください。')
     .setHelpText('取り上げてほしいテーマ、やってほしい企画、開催時間・場所・頻度など、どんなことでも歓迎です。')
     .setRequired(false);
 
   form.addParagraphTextItem()
-    .setTitle('Q10. その他、ご感想・ご意見など、自由にお書きください。')
+    .setTitle('Q8. その他、ご感想・ご意見など、自由にお書きください。')
     .setRequired(false);
 
   form.addCheckboxItem()
-    .setTitle('Q11. いただいた満足度や感想を、今後の会の告知・宣伝に使わせていただくことがあります。差し支えなければチェックしてください。')
+    .setTitle('Q9. いただいた満足度や感想を、今後の会の告知・宣伝に使わせていただくことがあります。差し支えなければチェックしてください。')
     .setHelpText('チェックがない回答は宣伝に引用しません。集計した数値（満足度の平均など）は匿名情報のため掲載に使う場合があります。')
     .setChoiceValues(['匿名（個人が特定されない形）での掲載に同意します'])
     .setRequired(false);

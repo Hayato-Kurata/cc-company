@@ -70,9 +70,8 @@ function createShiseidoForm() {
   form.addPageBreakItem().setTitle('セクション3：今後について');
 
   form.addMultipleChoiceItem()
-    .setTitle('Q5. 今後、白斑やカバーメイクに関する研究（アンケート・インタビュー等）にご協力いただけますか。')
-    .setHelpText('匿名アンケートのため意向のみ伺います。実際にご協力いただける方は、別途ご案内する登録フォームからお申し込みください（任意・このアンケートとは紐づきません）。')
-    .setChoiceValues(['はい', 'いいえ'])
+    .setTitle('Q5. またこのような会があれば、参加したいと思いますか。')
+    .setChoiceValues(['ぜひ参加したい', '参加したい', 'どちらともいえない', '参加は考えていない'])
     .setRequired(true);
 
   // ===== セクション4：要望・自由記述・掲載について =====

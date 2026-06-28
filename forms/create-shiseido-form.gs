@@ -27,7 +27,8 @@ function createShiseidoForm() {
   form.setDescription(
     '本日は「白斑の会 〜肌と人。〜」にご参加いただき、ありがとうございました。\n' +
     'よりよい会にしていくため、簡単なアンケートにご協力ください（3分ほど）。\n' +
-    '本アンケートは匿名です。お名前など個人が特定される情報はいただきません。'
+    '本アンケートは匿名です。お名前など個人が特定される情報はいただきません。\n' +
+    'なお、いただいた満足度やご感想は、匿名で今後の会の紹介・告知に使わせていただくことがあります（最後の設問で同意を確認します）。'
   );
 
   // --- 匿名化設定 ---
@@ -95,22 +96,27 @@ function createShiseidoForm() {
     .setRequired(false);
 
   form.addMultipleChoiceItem()
-    .setTitle('Q8. ふだん、白斑をカバーするメイクをしていますか。')
-    .setHelpText('今後の活動・研究の参考用です。部位や範囲などの詳細は尋ねません。')
-    .setChoiceValues(['している', 'ときどきしている', 'していない'])
-    .setRequired(false);
-
-  form.addMultipleChoiceItem()
-    .setTitle('Q9. 今後、白斑やカバーメイクに関する研究（アンケート・インタビュー等）にご協力いただけますか。')
+    .setTitle('Q8. 今後、白斑やカバーメイクに関する研究（アンケート・インタビュー等）にご協力いただけますか。')
     .setHelpText('匿名アンケートのため意向のみ伺います。実際にご協力いただける方は、別途ご案内する登録フォームからお申し込みください（任意・このアンケートとは紐づきません）。')
     .setChoiceValues(['はい', 'いいえ'])
     .setRequired(true);
 
-  // ===== セクション5：自由記述 =====
-  form.addPageBreakItem().setTitle('セクション5：自由記述');
+  // ===== セクション5：要望・自由記述・掲載について =====
+  form.addPageBreakItem().setTitle('セクション5：要望・自由記述・掲載について');
 
   form.addParagraphTextItem()
-    .setTitle('Q10. その他、ご感想・ご意見・次回への要望などがあれば自由にお書きください。')
+    .setTitle('Q9. 次回への要望・リクエストがあれば教えてください。')
+    .setHelpText('取り上げてほしいテーマ、やってほしい企画、開催時間・場所・頻度など、どんなことでも歓迎です。')
+    .setRequired(false);
+
+  form.addParagraphTextItem()
+    .setTitle('Q10. その他、ご感想・ご意見など、自由にお書きください。')
+    .setRequired(false);
+
+  form.addCheckboxItem()
+    .setTitle('Q11. いただいた満足度や感想を、今後の会の告知・宣伝に使わせていただくことがあります。差し支えなければチェックしてください。')
+    .setHelpText('チェックがない回答は宣伝に引用しません。集計した数値（満足度の平均など）は匿名情報のため掲載に使う場合があります。')
+    .setChoiceValues(['匿名（個人が特定されない形）での掲載に同意します'])
     .setRequired(false);
 
   // --- 出力 ---

@@ -1,31 +1,33 @@
 /**
- * 資生堂イベント アンケート（感想フォーム）自動生成スクリプト
+ * 「白斑の会 〜肌と人。〜」アンケート（感想フォーム）自動生成スクリプト
  *
  * ■ 使い方
  *   1. https://script.google.com を開き「新しいプロジェクト」を作成
  *   2. このファイルの中身をすべて貼り付け
- *   3. （任意）下の CONTENTS のコンテンツ名を実際のプログラム名に書き換え
- *   4. 関数「createShiseidoForm」を選択して実行（▶）
- *   5. 初回は権限の承認が求められるので許可
- *   6. 実行ログ（表示 → ログ）に出力される「編集URL / 回答URL」を開く
+ *   3. 関数「createShiseidoForm」を選択して実行（▶）
+ *   4. 初回は権限の承認が求められるので許可
+ *   5. 実行ログ（表示 → ログ）に出力される「編集URL / 回答URL」を開く
  *
- * ■ 仕様：匿名・全8問・満足度中心（参加前後の期待ギャップ／コンテンツごとの感想を含む）
+ * ■ 対象イベント：白斑の会 〜肌と人。〜（白斑のある方限定／主催：倉田速音／supported by 資生堂）
+ * ■ 仕様：匿名・満足度中心（参加前後の期待ギャップ／コンテンツごとの感想／研究協力の意向）
+ * ■ 配慮：白斑の部位・範囲などの詳細は尋ねない／商品の売り込みは含めない
  */
 
-// 実際のプログラム名に書き換えてください
+// 当日のコンテンツ（告知の「当日のコンテンツ」に準拠）
 const CONTENTS = [
-  'コンテンツA（例：オープニング）',
-  'コンテンツB（例：体験ワークショップ）',
-  'コンテンツC（例：トークセッション）'
+  '① 白斑とは？（わかりやすく解説）',
+  '② 白斑とともに生きる（倉田の活動のお話）',
+  '③ カバーメイクのコツ（プロによるテクニック紹介）',
+  '④ おしゃべり＆個別相談会（お茶を飲みながら交流）'
 ];
 
 function createShiseidoForm() {
-  const form = FormApp.create('資生堂イベント アンケート');
+  const form = FormApp.create('白斑の会 〜肌と人。〜 アンケート');
 
   form.setDescription(
-    '本日は資生堂のイベントにご参加いただき、ありがとうございました。\n' +
-    '今後の改善のため、簡単なアンケートにご協力ください（2〜3分）。\n' +
-    '本アンケートは匿名です。お名前やメールアドレスなど個人が特定される情報はいただきません。'
+    '本日は「白斑の会 〜肌と人。〜」にご参加いただき、ありがとうございました。\n' +
+    'よりよい会にしていくため、簡単なアンケートにご協力ください（3分ほど）。\n' +
+    '本アンケートは匿名です。お名前など個人が特定される情報はいただきません。'
   );
 
   // --- 匿名化設定 ---
@@ -34,20 +36,18 @@ function createShiseidoForm() {
   form.setProgressBar(true);
   form.setConfirmationMessage(
     'アンケートへのご協力、ありがとうございました。\n' +
-    'いただいたご意見は今後のイベントの向上に活用させていただきます。'
+    'いただいたお声を、これからの「白斑の会」づくりに活かしていきます。'
   );
 
-  // ===== セクション1：満足度 =====
-  form.addPageBreakItem().setTitle('セクション1：満足度');
+  // ===== セクション1：全体の満足度 =====
+  form.addPageBreakItem().setTitle('セクション1：全体の満足度');
 
-  // Q1 総合満足度（5段階）
   form.addScaleItem()
-    .setTitle('Q1. 本日のイベントの総合的な満足度を教えてください。')
+    .setTitle('Q1. 本日の会の総合的な満足度を教えてください。')
     .setBounds(1, 5)
     .setLabels('まったく満足していない', 'とても満足している')
     .setRequired(true);
 
-  // Q2 満足度の理由
   form.addParagraphTextItem()
     .setTitle('Q2. その満足度を選んだ理由を教えてください。')
     .setRequired(false);
@@ -55,14 +55,12 @@ function createShiseidoForm() {
   // ===== セクション2：参加前と参加後 =====
   form.addPageBreakItem().setTitle('セクション2：参加前と参加後');
 
-  // Q3 参加前の期待度（5段階）
   form.addScaleItem()
-    .setTitle('Q3. 参加する前、このイベントにどのくらい期待していましたか。')
+    .setTitle('Q3. 参加する前、この会にどのくらい期待していましたか。')
     .setBounds(1, 5)
     .setLabels('まったく期待していなかった', 'とても期待していた')
     .setRequired(true);
 
-  // Q4 参加後の期待との比較
   form.addMultipleChoiceItem()
     .setTitle('Q4. 参加した後、その期待と比べてどうでしたか。')
     .setChoiceValues([
@@ -75,26 +73,35 @@ function createShiseidoForm() {
     .setRequired(true);
 
   // ===== セクション3：コンテンツごとの感想 =====
-  form.addPageBreakItem().setTitle('セクション3：コンテンツ（プログラム）ごとの感想');
+  form.addPageBreakItem().setTitle('セクション3：コンテンツごとの感想');
 
-  // Q5 コンテンツごとの満足度（グリッド）
   form.addGridItem()
     .setTitle('Q5. 各コンテンツの満足度を教えてください。')
     .setRows(CONTENTS)
-    .setColumns(['とても良かった', '良かった', 'ふつう', 'いまひとつ', '良くなかった'])
+    .setColumns(['とても良かった', '良かった', 'ふつう', 'いまひとつ', '参加していない'])
     .setRequired(false);
 
-  // Q6 良かったコンテンツと良かった点
   form.addParagraphTextItem()
     .setTitle('Q6. 特に良かったコンテンツと、その良かった点を教えてください。')
     .setRequired(false);
 
-  // ===== セクション4：研究協力 =====
-  form.addPageBreakItem().setTitle('セクション4：今後の研究協力について');
+  // ===== セクション4：これからについて =====
+  form.addPageBreakItem().setTitle('セクション4：これからについて');
 
-  // Q7 研究協力の意向（はい/いいえ）
+  form.addScaleItem()
+    .setTitle('Q7. この会に参加して、白斑とのつき合い方や気持ちに前向きな変化はありましたか。')
+    .setBounds(1, 5)
+    .setLabels('まったくそう思わない', 'とてもそう思う')
+    .setRequired(false);
+
   form.addMultipleChoiceItem()
-    .setTitle('Q7. 今後、資生堂のイベントや活動に関する研究（アンケート・インタビュー等）にご協力いただけますか。')
+    .setTitle('Q8. ふだん、白斑をカバーするメイクをしていますか。')
+    .setHelpText('今後の活動・研究の参考用です。部位や範囲などの詳細は尋ねません。')
+    .setChoiceValues(['している', 'ときどきしている', 'していない'])
+    .setRequired(false);
+
+  form.addMultipleChoiceItem()
+    .setTitle('Q9. 今後、白斑やカバーメイクに関する研究（アンケート・インタビュー等）にご協力いただけますか。')
     .setHelpText('匿名アンケートのため意向のみ伺います。実際にご協力いただける方は、別途ご案内する登録フォームからお申し込みください（任意・このアンケートとは紐づきません）。')
     .setChoiceValues(['はい', 'いいえ'])
     .setRequired(true);
@@ -102,9 +109,8 @@ function createShiseidoForm() {
   // ===== セクション5：自由記述 =====
   form.addPageBreakItem().setTitle('セクション5：自由記述');
 
-  // Q8 自由意見
   form.addParagraphTextItem()
-    .setTitle('Q8. その他、ご意見・ご感想・ご要望があれば自由にお書きください。')
+    .setTitle('Q10. その他、ご感想・ご意見・次回への要望などがあれば自由にお書きください。')
     .setRequired(false);
 
   // --- 出力 ---

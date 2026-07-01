@@ -8,6 +8,19 @@
   },
   "plugins": [
     {
+      "name": "nichityo",
+      "source": "./plugins/nichityo",
+      "description": "日程調整スキル。「いつ空いてる？」に候補日をサクッと返す。選択式UIで直感的に操作できる。",
+      "version": "1.0.0",
+      "author": {
+        "name": "Shin-sibainu"
+      },
+      "repository": "https://github.com/Shin-sibainu/cc-company",
+      "license": "MIT",
+      "category": "productivity",
+      "tags": ["schedule", "calendar", "nichityo", "productivity"]
+    },
+    {
       "name": "company",
       "source": "./plugins/company",
       "description": "秘書から始める仮想組織スキル。3ステップで即運用開始、部署は必要に応じて自然に増える。",

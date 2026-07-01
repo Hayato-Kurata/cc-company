@@ -9,6 +9,7 @@ Claude Code で仮想組織を構築・運営するプラグイン。
 ```
 /plugin marketplace add Shin-sibainu/cc-company
 /plugin install company@cc-company
+/plugin install nichityo@cc-company
 ```
 
 ## コンセプト
@@ -97,6 +98,13 @@ Claude Code で仮想組織を構築・運営するプラグイン。
 - 使用中の部署 → そのまま引き継ぎ
 - 空の部署 → 削除
 
+## スキル一覧
+
+| スキル | コマンド | 説明 |
+|--------|---------|------|
+| company | `/company` | 秘書から始める仮想組織 |
+| nichityo | `/nichityo` | 日程調整の候補日をサクッと生成 |
+
 ## ファイル構成
 
 ```
@@ -104,15 +112,21 @@ cc-company/
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── plugins/
-│   └── company/
+│   ├── company/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   └── skills/
+│   │       └── company/
+│   │           ├── SKILL.md
+│   │           └── references/
+│   │               ├── departments.md
+│   │               └── claude-md-template.md
+│   └── nichityo/
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       └── skills/
-│           └── company/
-│               ├── SKILL.md
-│               └── references/
-│                   ├── departments.md
-│                   └── claude-md-template.md
+│           └── nichityo/
+│               └── SKILL.md
 ├── README.md
 └── LICENSE
 ```

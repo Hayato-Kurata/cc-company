@@ -32,6 +32,19 @@
       "license": "MIT",
       "category": "productivity",
       "tags": ["company", "organization", "secretary", "productivity", "management"]
+    },
+    {
+      "name": "shadan",
+      "source": "./plugins/shadan",
+      "description": "一般社団法人の設立を支援するスキル。ヒアリングから定款ドラフト・手続きロードマップ・費用一覧まで一気通貫。",
+      "version": "1.0.0",
+      "author": {
+        "name": "Shin-sibainu"
+      },
+      "repository": "https://github.com/Shin-sibainu/cc-company",
+      "license": "MIT",
+      "category": "productivity",
+      "tags": ["legal", "houjin", "incorporation", "shadan", "productivity"]
     }
   ]
 }

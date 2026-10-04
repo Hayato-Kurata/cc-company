@@ -66,7 +66,7 @@ For example, adding a Research department:
 | Research | Market research, competitive analysis, tech research |
 | Marketing | Content planning, SNS, campaigns |
 | Engineering | Technical docs, design, debugging |
-| Finance | Invoices, expenses, revenue management |
+| Finance | Invoices, expenses, revenue, budget management |
 | Sales | Client management, proposals |
 | Creative | Design briefs, brand management |
 | HR | Recruitment, team management |

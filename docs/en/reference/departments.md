@@ -90,16 +90,19 @@ engineering/
 
 ## Finance
 
-**Handles:** Invoices, expenses, revenue management
+**Handles:** Invoices, expenses, revenue, budget management
 
 ```
 finance/
 ├── CLAUDE.md
 ├── invoices/       ← 1 file per invoice
-└── expenses/       ← By month or category
+├── expenses/       ← By month or category
+└── budget/         ← Monthly (YYYY-MM.md)
 ```
 
 **Status (invoices):** `draft` → `sent` → `paid` → `overdue`
+
+**Budget:** Ask "how's my budget?" and the secretary summarizes this month's budget file: spend vs. budget and income vs. target, broken down by category. Categories over 80% or over budget are flagged first.
 
 ---
 
